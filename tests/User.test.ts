@@ -1,4 +1,4 @@
-import supertest from 'supertest'
+const supertest = require('supertest')
 
 const request = supertest('http://localhost:3000')
 
@@ -7,20 +7,20 @@ describe('User features tests', () => {
         it('should return status 200', async () => {
             const requestBody = {
                 name: "Fulano",
-                email: "fulano@gmail.com",
+                email: `${Math.random()}@gmail.com`,
                 password: "fulano123",
                 age: 20,
                 style: "design"
             }
 
             const response = await request.post('/user').send(requestBody)
-            expect(response.status).toBe(200)
+            expect(response.status).toBe(201)
         })
 
         it('should return success message', async () => {
             const requestBody = {
                 name: "Ciclano",
-                email: "ciclano@gmail.com",
+                email: `${Math.random()}@gmail.com`,
                 password: "ciclano",
                 age: 22,
                 style: "design"
@@ -53,7 +53,9 @@ describe('User features tests', () => {
                 style: "design"
             }
 
+            await request.post('/user').send(requestBody)
             const response = await request.post('/user').send(requestBody)
+
             expect(response.status).toBe(400)
             expect(response.body.message).toBe('Email already exists. Please, try login!')
         })
