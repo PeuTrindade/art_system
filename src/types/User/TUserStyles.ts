@@ -1,0 +1,1 @@
+export type TUserStyles = 'design' | 'photography' | 'painting' | 'sculpture'
