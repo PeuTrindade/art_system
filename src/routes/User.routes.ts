@@ -1,9 +1,8 @@
-import express from 'express'
-import UserController from '../controllers/UserController'
+import express from "express"
+import UserController from "../controllers/UserController"
 
-const router = express.Router()
+const userRoutes = express.Router()
 
-router.post('/', UserController.create)
-router.get('/:id', UserController.findById)
+userRoutes.post('/', UserController.create)
 
-export default router
+export { userRoutes } 

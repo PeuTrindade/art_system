@@ -1,43 +1,32 @@
-import { ICreateUserDTO } from "../interfaces/Users/ICreateUserDTO";
-import connection from '../database'
-import bcrypt from 'bcrypt'
+import { ICreateUserDTO } from "../interfaces/User/ICreateUserDTO"
+import { hash } from 'bcrypt'
+import { TUserResponse } from "../types/TResponse"
+import connection from "../database"
 
 class User {
-    async create({ age, email, name, password, style, image }: ICreateUserDTO) {
+    async create({ name, email, password, age ,style, image }: ICreateUserDTO): Promise<TUserResponse> {
         try {
-            const hashPassword = await bcrypt.hash(password, 10)
+            const hashPassword = await hash(password, 10)
 
-            await connection.insert({ age, email, name, password: hashPassword, style, image }).table('users') 
-        } catch (error: any) {
-            throw new Error(error.message)
+            await connection.insert({ name, email, password: hashPassword, age, style, image }).table('users')
+        
+            return { isOk: true }
+        } catch (error) {
+            return { isOk: false, message: error }
         }
     }
 
-    async findByEmail(email: string) {
+    async findByEmail(email: string): Promise<boolean> {
         try {
-            const user = await connection.select('*').from('users').where({ email })
+            const users = await connection.select('*').from('users').where({ email })
 
-            if (user.length > 0) {
+            if (users.length > 0) {
                 return true
             }
 
             return false
         } catch (error) {
-            console.log(error)
             return false
-        }
-    }
-
-    async findById(id: number) {
-        try {
-            const user = await connection.select('*').from('users').where({ id }).first()
-
-            if (user) return user
-
-            return null
-        } catch (error) {
-            console.log(error)
-            return null
         }
     }
 }

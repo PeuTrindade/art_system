@@ -1,9 +1,9 @@
-import knex from "knex"
+import knex from 'knex'
 
 const connection = knex({
     client: 'mysql2',
     connection: {
-        host: 'localhost',
+        host: '127.0.0.1',
         user: 'root',
         password: '123456',
         database: 'apiarts'
