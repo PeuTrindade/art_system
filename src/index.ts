@@ -1,8 +1,14 @@
-import express from 'express';
+import express from 'express'
+import bodyParser from 'body-parser'
+import userRoutes from './routes/User.routes'
 
-const app = express();
-const port = 3000;
+const app = express()
 
-app.listen(port, () => {
-  return console.log(`Server is running on port ${port}`);
-});
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: false }))
+
+app.use('/user', userRoutes)
+
+app.listen(3000, () => {
+    console.log('Server is running!')
+})
