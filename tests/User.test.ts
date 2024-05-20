@@ -61,7 +61,7 @@ describe('User features tests', () => {
         })
     })
 
-   describe('Find user by email tests', () => {
+    describe('Find user by email tests', () => {
         it('should return status 200', async () => {
             const email = `${Math.random()}@gmail.com` 
 
@@ -75,7 +75,7 @@ describe('User features tests', () => {
 
             await request.post('/user').send(requestBody)
 
-            const response = await request.post(`/user/${email}`)
+            const response = await request.get(`/user/${email}`)
 
             expect(response.status).toBe(200)
         })
@@ -93,7 +93,7 @@ describe('User features tests', () => {
 
             await request.post('/user').send(requestBody)
 
-            const response = await request.post(`/user/${email}`)
+            const response = await request.get(`/user/${email}`)
 
             expect(response.status).toBe(200)
             expect(response.body.message).toBe('User found successfully!')
@@ -112,7 +112,7 @@ describe('User features tests', () => {
 
             await request.post('/user').send(requestBody)
 
-            const response = await request.post(`/user/${email}`)
+            const response = await request.get(`/user/${email}`)
 
             expect(response.status).toBe(200)
             expect(response.body.user.name).toBe('Fulano')
@@ -120,5 +120,14 @@ describe('User features tests', () => {
             expect(response.body.user.age).toBe(20)
             expect(response.body.user.style).toBe('design')
         })
-   })
+
+        it('should return error message', async () => {
+            const email = `randomrandom@gmail.com` 
+
+            const response = await request.get(`/user/${email}`)
+
+            expect(response.status).toBe(400)
+            expect(response.body.message).toBe('User not found!')
+        })
+    })
 })
