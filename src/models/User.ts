@@ -3,6 +3,7 @@ import { hash } from 'bcrypt'
 import { TUserResponse } from "../types/TResponse"
 import connection from "../database"
 import { IUser } from "../interfaces/User/IUser"
+import { IUpdateUserDTO } from "../interfaces/User/IUpdateUserDTO"
 
 class User {
     async create({ name, email, password, age ,style, image }: ICreateUserDTO): Promise<boolean> {
@@ -43,6 +44,21 @@ class User {
             return null
         } catch (error) {
             return null
+        }
+    }
+
+    async update({ id, age, name, password, style }: IUpdateUserDTO): Promise<boolean> {
+        try {
+            const hashPassword = await hash(password, 10)
+            const isSuccess = await connection.update({ age, name, password: hashPassword, style }).where({ id }).table('users')
+
+            if (isSuccess) {
+                return true
+            }
+
+            return false
+        } catch (error) {
+            return false
         }
     }
 }

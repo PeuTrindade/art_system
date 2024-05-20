@@ -130,4 +130,34 @@ describe('User features tests', () => {
             expect(response.body.message).toBe('User not found!')
         })
     })
+
+    describe('Update user info', () => {
+        it('should return user not found error message', async () => {
+            const requestBody = {
+                name: "Fulano",
+                password: "fulano123",
+                age: 20,
+                style: "design"
+            }
+
+            const response = await request.put('/user/48375935353535').send(requestBody)
+
+            expect(response.status).toBe(400)
+            expect(response.body.message).toBe('User update failed!')
+        })
+
+        it('should return success message', async () => {
+            const updateRequestBody = {
+                name: "Fulano",
+                password: "fulano123",
+                age: 20,
+                style: "design"
+            }
+
+            const updateResponse = await request.put(`/user/10`).send(updateRequestBody)
+
+            expect(updateResponse.status).toBe(200)
+            expect(updateResponse.body.message).toBe('User info was updated successfully!')
+        })
+    })
 })

@@ -46,6 +46,28 @@ class UserController {
         res.status(200)
         res.json({ message: "User found successfully!", user})
     }
+
+    async update(req: Request, res: Response) {
+        const { id } = req.params
+        const { age, name, password, style } = req.body
+
+        if (!age || !name || !password || !style) {
+            res.status(400)
+            res.json({ message: "Fields missing! Please send valid data."})
+
+            return
+        }
+
+        const modelResponse = await User.update({ id, age, name, password, style })
+
+        if (modelResponse) {
+            res.status(200)
+            res.json({ message: "User info was updated successfully!"})
+        } else {
+            res.status(400)
+            res.json({ message: "User update failed!" })
+        }
+    }
 }
 
 export default new UserController()
