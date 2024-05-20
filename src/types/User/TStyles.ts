@@ -1,0 +1,1 @@
+export type TStyles = 'painting' | 'sculpture' | 'design' | 'photography'
