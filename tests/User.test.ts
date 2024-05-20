@@ -61,13 +61,13 @@ describe('User features tests', () => {
         })
     })
 
-    describe('Update user tests', () => {
-        it('should update user name', async () => {
-            const email = `${Math.random()}@gmail.com`
+   describe('Find user by email tests', () => {
+        it('should return status 200', async () => {
+            const email = `${Math.random()}@gmail.com` 
 
             const requestBody = {
                 name: "Fulano",
-                email: `${Math.random()}@gmail.com`,
+                email: email,
                 password: "fulano123",
                 age: 20,
                 style: "design"
@@ -75,30 +75,17 @@ describe('User features tests', () => {
 
             await request.post('/user').send(requestBody)
 
-            const user = await request.get(`/user/${email}`)
-            const userId = user.body.user.id
-
-            const requestBodyUpdated = {
-                name: "Fulano Ciclano",
-                email: email,
-                password: "fulano123",
-                age: 20,
-                style: "design"
-            }
-
-            const response = request.put(`/user/${userId}`).send(requestBodyUpdated)
+            const response = await request.post(`/user/${email}`)
 
             expect(response.status).toBe(200)
-            expect(response.body.message).toBe("User has been updated successfully!")
-            expect(response.body.user.name).toBe("Fulano Ciclano")
         })
 
-        it('should update user password', async () => {
-            const email = `${Math.random()}@gmail.com`
+        it('should return correctly message', async () => {
+            const email = `${Math.random()}@gmail.com` 
 
             const requestBody = {
                 name: "Fulano",
-                email: `${Math.random()}@gmail.com`,
+                email: email,
                 password: "fulano123",
                 age: 20,
                 style: "design"
@@ -106,29 +93,18 @@ describe('User features tests', () => {
 
             await request.post('/user').send(requestBody)
 
-            const user = await request.get(`/user/${email}`)
-            const userId = user.body.user.id
-
-            const requestBodyUpdated = {
-                name: "Fulano Ciclano",
-                email: email,
-                password: "fulano12345",
-                age: 20,
-                style: "design"
-            }
-
-            const response = request.put(`/user/${userId}`).send(requestBodyUpdated)
+            const response = await request.post(`/user/${email}`)
 
             expect(response.status).toBe(200)
-            expect(response.body.message).toBe("User has been updated successfully!")
+            expect(response.body.message).toBe('User found successfully!')
         })
 
-        it('should update user age', async () => {
-            const email = `${Math.random()}@gmail.com`
+        it('should return user info correctly', async () => {
+            const email = `${Math.random()}@gmail.com` 
 
             const requestBody = {
                 name: "Fulano",
-                email: `${Math.random()}@gmail.com`,
+                email: email,
                 password: "fulano123",
                 age: 20,
                 style: "design"
@@ -136,68 +112,13 @@ describe('User features tests', () => {
 
             await request.post('/user').send(requestBody)
 
-            const user = await request.get(`/user/${email}`)
-            const userId = user.body.user.id
-
-            const requestBodyUpdated = {
-                name: "Fulano Ciclano",
-                email: email,
-                password: "fulano12345",
-                age: 25,
-                style: "design"
-            }
-
-            const response = request.put(`/user/${userId}`).send(requestBodyUpdated)
+            const response = await request.post(`/user/${email}`)
 
             expect(response.status).toBe(200)
-            expect(response.body.message).toBe("User has been updated successfully!")
-            expect(response.body.user.age).toBe(25)
+            expect(response.body.user.name).toBe('Fulano')
+            expect(response.body.user.email).toBe(email)
+            expect(response.body.user.age).toBe(20)
+            expect(response.body.user.style).toBe('design')
         })
-
-        it('should update user style', async () => {
-            const email = `${Math.random()}@gmail.com`
-
-            const requestBody = {
-                name: "Fulano",
-                email: `${Math.random()}@gmail.com`,
-                password: "fulano123",
-                age: 20,
-                style: "design"
-            }
-
-            await request.post('/user').send(requestBody)
-
-            const user = await request.get(`/user/${email}`)
-            const userId = user.body.user.id
-
-            const requestBodyUpdated = {
-                name: "Fulano Ciclano",
-                email: email,
-                password: "fulano12345",
-                age: 25,
-                style: "photography"
-            }
-
-            const response = request.put(`/user/${userId}`).send(requestBodyUpdated)
-
-            expect(response.status).toBe(200)
-            expect(response.body.message).toBe("User has been updated successfully!")
-            expect(response.body.user.style).toBe("photography")
-        })
-
-        it('should return invalid user error', async () => {
-            const requestBodyUpdated = {
-                name: "Fulano Ciclano",
-                email:`${Math.random()}@gmail.com` ,
-                password: "fulano123",
-                age: 25,
-                style: "design"
-            }
-
-            const response = request.put(`/user/98525453843626424`).send(requestBodyUpdated)
-
-            expect(response.status).toBe(400)
-            expect(response.body.message).toBe("User not found! Try again.")
-        })
-    })
+   })
 })
