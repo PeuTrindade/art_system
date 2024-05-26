@@ -60,6 +60,35 @@ class ArtController {
             res.json({ message: "Art update failed!" })
         }
     }
+
+    async list(req: Request, res: Response) {
+        const arts = await Art.list()
+
+        if (!arts) {
+            res.status(400)
+            res.json({ message: "Arts list failed!"})
+
+            return
+        }
+
+        res.status(200)
+        res.json({ arts })
+    }
+
+    async delete(req: Request, res: Response) {
+        const { id } = req.params
+        const isSuccessDeleted = await Art.delete(id)
+
+        if (!isSuccessDeleted) {
+            res.status(400)
+            res.json({ message: "Art delete failed!"})
+
+            return
+        }
+
+        res.status(200)
+        res.json({ message: "Art deleted successfully!"})
+    }
 }
 
 export default new ArtController()

@@ -41,6 +41,28 @@ class Art {
             return false
         }
     }
+
+    async list(): Promise<IArt[] | null> {
+        try {
+            const arts = await connection.select('*').from('arts')
+
+            return arts
+        } catch (error) {
+            return null
+        }
+    }
+
+    async delete(id: string): Promise<boolean> {
+        try {
+            const isSuccess = await connection.delete().where({ id }).table('arts')
+
+            if (isSuccess) return true
+
+            return false
+        } catch (error) {
+            return false
+        }
+    }
 }
 
 export default new Art()

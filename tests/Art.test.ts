@@ -78,4 +78,33 @@ describe('Art features tests', () => {
             expect(response.status).toBe(200)
         })
     })
+
+    describe('Delete art', () => {
+        it('should return error', async () => {
+            const response = await req.delete('/art/493525844684532')
+
+            expect(response.status).toBe(400)
+            expect(response.body.message).toBe('Art delete failed!')
+        })
+
+        it('should delete correctly', async () => {
+            const artsResponse = await req.get('/art')
+            const arts = artsResponse.body.arts
+
+            const artsIds = arts.map((art) => art.id)
+
+            const response = await req.delete(`/art/${artsIds[0]}`)
+
+            expect(response.status).toBe(200)
+            expect(response.body.message).toBe('Art deleted successfully!')
+        })
+    })
+
+    describe('List arts', () => {
+        it('should return success status', async () => {
+            const response = await req.get('/art')
+
+            expect(response.status).toBe(200)
+        })
+    })
 })
