@@ -57,7 +57,7 @@ describe('Art features tests', () => {
                 valuedAt: 324.34
             }
 
-            const updateResponse = await req.put(`/art/2`).send(updateRequestBody)
+            const updateResponse = await req.put(`/art/32`).send(updateRequestBody)
 
             expect(updateResponse.status).toBe(200)
             expect(updateResponse.body.message).toBe('Art info was updated successfully!')
@@ -73,7 +73,7 @@ describe('Art features tests', () => {
         })
 
         it('should return success code', async () => {
-            const response = await req.get(`/art/2`)
+            const response = await req.get(`/art/32`)
 
             expect(response.status).toBe(200)
         })
