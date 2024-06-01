@@ -1,5 +1,7 @@
 import { Request, Response } from "express"
 import User from "../models/User"
+import bcrypt from 'bcrypt'
+import jwt from 'jsonwebtoken'
 
 class UserController {
     async create(req: Request, res: Response) {
@@ -66,6 +68,33 @@ class UserController {
         } else {
             res.status(400)
             res.json({ message: "User update failed!" })
+        }
+    }
+
+    async auth(req: Request, res: Response) {
+        const { email, password } = req.body
+
+        const user = await User.getByEmail(email)
+
+        if (!user) {
+            res.status(400)
+            res.json({ message: "User does not exists!"})
+
+            return
+        } else {
+            const comparePasswords = await bcrypt.compare(password, user.password)
+
+            if (comparePasswords) {
+                const token = jwt.sign({ email: user.email }, 'jfbfuwfnfaubfefiwmmmaiaue2344wiwiw')
+
+                res.status(200)
+                res.json({ message: "Auth succeeded!", token })
+            } else {
+                res.status(406)
+                res.json({ message: "Invalid email or password!"})
+
+                return
+            }
         }
     }
 }
