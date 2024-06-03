@@ -6,11 +6,11 @@ import { IUser } from "../interfaces/User/IUser"
 import { IUpdateUserDTO } from "../interfaces/User/IUpdateUserDTO"
 
 class User {
-    async create({ name, email, password, age ,style, image }: ICreateUserDTO): Promise<boolean> {
+    async create({ name, email, password, age ,style }: ICreateUserDTO): Promise<boolean> {
         try {
             const hashPassword = await hash(password, 10)
 
-            await connection.insert({ name, email, password: hashPassword, age, style, image }).table('users')
+            await connection.insert({ name, email, password: hashPassword, age, style }).table('users')
         
             return true
         } catch (error) {
@@ -51,6 +51,20 @@ class User {
         try {
             const hashPassword = await hash(password, 10)
             const isSuccess = await connection.update({ age, name, password: hashPassword, style }).where({ id }).table('users')
+
+            if (isSuccess) {
+                return true
+            }
+
+            return false
+        } catch (error) {
+            return false
+        }
+    }
+
+    async updateImage(id: string, image: string): Promise<boolean> {
+        try {
+            const isSuccess = await connection.update({ image }).where({ id }).table('users')
 
             if (isSuccess) {
                 return true

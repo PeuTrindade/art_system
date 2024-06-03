@@ -5,7 +5,7 @@ import jwt from 'jsonwebtoken'
 
 class UserController {
     async create(req: Request, res: Response) {
-        const { name, email, password, age, style, image } = req.body
+        const { name, email, password, age, style } = req.body
         const validStyles = ['design', 'photography', 'painting', 'sculpture']
 
         const userAlreadyExists = await User.findByEmail(email)
@@ -22,7 +22,7 @@ class UserController {
             return
         }
         
-        const modelResponse = await User.create({ age, email, image, name, password, style })
+        const modelResponse = await User.create({ age, email, name, password, style })
 
         if (modelResponse) {
             res.status(201)
@@ -95,6 +95,28 @@ class UserController {
 
                 return
             }
+        }
+    }
+
+    async updateImage(req: Request, res: Response) {
+        const { id } = req.params
+        const image = req.file.path
+
+        if (!image) {
+            res.status(400)
+            res.json({ message: "Fields missing! Please send valid data."})
+
+            return
+        }
+
+        const modelResponse = await User.updateImage(id, image)
+
+        if (modelResponse) {
+            res.status(200)
+            res.json({ message: "User image was updated successfully!"})
+        } else {
+            res.status(400)
+            res.json({ message: "User image update failed!" })
         }
     }
 }
