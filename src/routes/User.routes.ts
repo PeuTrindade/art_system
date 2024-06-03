@@ -11,6 +11,7 @@ userRoutes.post('/', UserController.create)
 userRoutes.get('/:email', UserController.getByEmail)
 userRoutes.put('/:id', Auth as any, UserController.update)
 userRoutes.post('/auth', UserController.auth)
-userRoutes.patch('/image/:id', upload.single('image'), UserController.updateImage)
+userRoutes.get('/', Auth as any, UserController.list)
+userRoutes.patch('/image/:id', Auth as any, upload.single('image'), UserController.updateImage)
 
 export { userRoutes }

@@ -119,6 +119,20 @@ class UserController {
             res.json({ message: "User image update failed!" })
         }
     }
+
+    async list(req: Request, res: Response) {
+        const users = await User.list()
+
+        if (!users) {
+            res.status(400)
+            res.json({ message: "Users list failed!"})
+
+            return
+        }
+
+        res.status(200)
+        res.json({ users })
+    }
 }
 
 export default new UserController()

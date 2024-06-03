@@ -12,6 +12,6 @@ artRoutes.get('/:id', Auth as any, ArtController.getById)
 artRoutes.put('/:id', Auth as any, ArtController.update)
 artRoutes.get('/', Auth as any, ArtController.list)
 artRoutes.delete('/:id', Auth as any, ArtController.delete)
-artRoutes.patch('/image/:id', upload.single('image'), ArtController.updateImage)
+artRoutes.patch('/image/:id', Auth as any, upload.single('image'), ArtController.updateImage)
 
 export { artRoutes } 

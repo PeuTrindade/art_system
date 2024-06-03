@@ -75,6 +75,16 @@ class User {
             return false
         }
     }
+
+    async list(): Promise<IUser[] | null> {
+        try {
+            const users = await connection.select('*').from('users')
+
+            return users
+        } catch (error) {
+            return null
+        }
+    }
 }
 
 export default new User()
