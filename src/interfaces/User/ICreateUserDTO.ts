@@ -5,6 +5,5 @@ export interface ICreateUserDTO {
     email: string
     password: string
     age: number
-    image: string | undefined
     style: TUserStyles
 }
