@@ -52,6 +52,16 @@ class Art {
         }
     }
 
+    async listFromUser(id: string): Promise<IArt[] | null> {
+        try {
+            const arts = await connection.select('*').where({ userId: id }).from('arts')
+
+            return arts
+        } catch (error) {
+            return null
+        }
+    }
+
     async delete(id: string): Promise<boolean> {
         try {
             const isSuccess = await connection.delete().where({ id }).table('arts')

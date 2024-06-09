@@ -18,7 +18,7 @@ const ioServer = new Server(http, {
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 app.use(routes)
-
+app.use(express.static('uploads'))
 
 const port = 3200
 const socketPort = 3999
