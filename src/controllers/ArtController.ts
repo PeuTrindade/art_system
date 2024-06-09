@@ -75,6 +75,21 @@ class ArtController {
         res.json({ arts })
     }
 
+    async listFromUser(req: Request, res: Response) {
+        const { id } = req.params
+        const arts = await Art.listFromUser(id)
+
+        if (!arts) {
+            res.status(400)
+            res.json({ message: "Arts list failed!"})
+
+            return
+        }
+
+        res.status(200)
+        res.json({ arts })
+    }
+
     async delete(req: Request, res: Response) {
         const { id } = req.params
         const isSuccessDeleted = await Art.delete(id)
