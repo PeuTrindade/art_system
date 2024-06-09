@@ -88,7 +88,7 @@ class UserController {
                 const token = jwt.sign({ email: user.email }, 'jfbfuwfnfaubfefiwmmmaiaue2344wiwiw')
 
                 res.status(200)
-                res.json({ message: "Auth succeeded!", token })
+                res.json({ message: "Auth succeeded!", token, user: { email: user.email, name: user.name, age: user.age, style: user.style, id: user.id } })
             } else {
                 res.status(406)
                 res.json({ message: "Invalid email or password!"})

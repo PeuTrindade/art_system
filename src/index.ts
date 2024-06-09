@@ -9,7 +9,11 @@ const app = express()
 app.use(cors())
 
 const http = require('http').createServer(app)
-const ioServer = new Server(http)
+const ioServer = new Server(http, {
+  cors: {
+    origin: '*',
+  }
+})
 
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
