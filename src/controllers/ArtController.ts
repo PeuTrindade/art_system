@@ -3,7 +3,7 @@ import Art from "../models/Art"
 
 class ArtController {
     async create(req: Request, res: Response) {
-        const { name, image, valuedAt, userId } = req.body
+        const { name, valuedAt, userId } = req.body
 
         if (!name || !valuedAt || !userId ) {
             res.status(400)
@@ -12,7 +12,7 @@ class ArtController {
             return
         }
 
-        const modelResponse = await Art.create({ name, image, valuedAt, userId })
+        const modelResponse = await Art.create({ name, valuedAt, userId })
 
         if (modelResponse) {
             res.status(201)
@@ -75,6 +75,21 @@ class ArtController {
         res.json({ arts })
     }
 
+    async listFromUser(req: Request, res: Response) {
+        const { id } = req.params
+        const arts = await Art.listFromUser(id)
+
+        if (!arts) {
+            res.status(400)
+            res.json({ message: "Arts list failed!"})
+
+            return
+        }
+
+        res.status(200)
+        res.json({ arts })
+    }
+
     async delete(req: Request, res: Response) {
         const { id } = req.params
         const isSuccessDeleted = await Art.delete(id)
@@ -88,6 +103,28 @@ class ArtController {
 
         res.status(200)
         res.json({ message: "Art deleted successfully!"})
+    }
+
+    async updateImage(req: Request, res: Response) {
+        const { id } = req.params
+        const image = req.file.path
+
+        if (!image) {
+            res.status(400)
+            res.json({ message: "Fields missing! Please send valid data."})
+
+            return
+        }
+
+        const modelResponse = await Art.updateImage(id, image)
+
+        if (modelResponse) {
+            res.status(200)
+            res.json({ message: "Art image was updated successfully!"})
+        } else {
+            res.status(400)
+            res.json({ message: "Art image update failed!" })
+        }
     }
 }
 
