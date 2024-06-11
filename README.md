@@ -6,7 +6,7 @@ Este é o projeto Art System. Imagine um sistema no qual artistas de todo o mund
 
 ```bash
 # Clone este repositório
-$ git clone https://github.com/PeuTrindade/art_system
+$ git clone https://github.com/PeuTrindade/art_system.git
 
 # Vá para o projeto
 $ cd art_system
